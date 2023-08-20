@@ -78,7 +78,7 @@
 | `_id` | `string` | **Required**. Enter ID to delete user|
 
 
-## Category
+## CATEGORY
 
 #### Add Category
 
@@ -131,10 +131,10 @@
 | `CategoryName` | `string` | **Required**. Enter Category Name|
 | `CategoryImage` | `string` |Upload Category Image|
 
-#### Delete User
+#### Delete Category
 
 ```http
-  POST /api/delete-user
+  POST /api/delete-category
 ```
   
 | Parameter | Type     | Description                |
@@ -142,7 +142,7 @@
 | `_id` | `string` | **Required**. Enter ID to delete Category|
 
 
-## Brand
+## BRAND
 
 #### Add Brand
 
@@ -207,7 +207,7 @@
 
 
 
-## Product
+## PRODUCT
 
 #### Add Product
 
