@@ -21,7 +21,7 @@ const UserSchema = new Schema({
     },
     profile_pic: {
         type: String,
-        default: "https://static.vecteezy.com/system/resources/previews/002/318/271/non_2x/user-profile-icon-free-vector.jpg"
+        default: "https://firebasestorage.googleapis.com/v0/b/cosmetics-api-storage-941af.appspot.com/o/user.png?alt=media&token=4eef9d27-fbb7-4db5-9e61-36026dd9b8d5"
     },
     joiningDate: {
         type: Date,

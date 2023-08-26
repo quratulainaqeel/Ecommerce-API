@@ -5,7 +5,6 @@ const Order = require('./Schema')
 const mongoose = { connect } = require('mongoose')
 
 
-
 const sendMail = async (req, res) => {
     const { email, customerName } = req.body
 
@@ -21,7 +20,7 @@ const sendMail = async (req, res) => {
             service: 'gmail',
             auth: {
 
-                user: process.env.NODEMAILER_Email,
+                user: process.env.NODEMAILER_EMAIL,
                 pass: process.env.NODEMAILER_PASSWORD
             }
         }
@@ -55,7 +54,7 @@ const sendMail = async (req, res) => {
         };
 
         const response = {
-            from: process.env.NODEMAILER_Email,
+            from: process.env.NODEMAILER_EMAIL,
             to: email,
             subject: "Order Place", // Subject line
             text: "Hello world?", // plain text body
@@ -179,4 +178,44 @@ const OrderById = async (req, res) => {
 
     }
 }
-module.exports = { sendMail, AddOrders, AllOrders, OrderById }
+
+const UpdateOrder = async (req, res) => {
+    const { _id, status } = req.body
+    if (!_id) {
+        res.status(403).json({
+            message: "Missing Required Field"
+        })
+    }
+
+    else {
+        const filter = { _id };
+        const update = { status };
+
+        try {
+
+            await connect(process.env.MONGO_URI)
+            console.log("DB connected")
+
+            await Order.findOneAndUpdate(filter, update, {
+                new: true
+            });
+
+            const updatestatus = await Order.find()
+
+            res.json({
+                message: "Status Updated",
+                Order: updatestatus
+            })
+        }
+        catch (error) {
+            res.status(404).json(
+                {
+                    message: error.messaage
+                }
+            )
+
+        }
+    }
+
+}
+module.exports = { sendMail, AddOrders, AllOrders, OrderById, UpdateOrder }

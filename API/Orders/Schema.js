@@ -26,6 +26,10 @@ const OrdeSchema = new Schema(
             type: String,
             required: true,
         },
+        status: {
+            type: String,
+            default:"pending",
+        },
         order_at: {
             type: Date,
             default: Date.now

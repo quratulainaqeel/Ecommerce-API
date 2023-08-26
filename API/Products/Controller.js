@@ -98,7 +98,7 @@ const getProductById = async (req, res) => {
         const product = await Product.findOne({ _id })
 
         res.status(200).json({
-            message:"Product by ID",
+            message: "Product by ID",
             Product: product
         })
 
@@ -133,7 +133,7 @@ const getProductByCategory = async (req, res) => {
 const UpdateProduct = async (req, res) => {
     const { _id, name, description, price, category, brand, thumbnail, rating, images } = req.body
 
-    if (!_id ) {
+    if (!_id) {
         res.status(403).json({
             message: "Missing Required Field"
         })
@@ -190,4 +190,35 @@ const DeleteProduct = async (req, res) => {
     }
 }
 
-module.exports = { CreateProduct, getAllProduct, getProductByBrand, getProductById, getProductByCategory, UpdateProduct, DeleteProduct }
+const SearchProduct = async (req, res) => {
+    const { item } = req.params;
+    let search = {};
+
+    try {
+        await connect(process.env.MONGO_URI);
+        console.log("DB CONNECTED");
+
+        // Use a $regex query to search for the keyword in various attributes
+        search = {
+            $or: [
+                { brand: { $regex: item, $options: "i" } },
+                { category: { $regex: item, $options: "i" } },
+                { name: { $regex: item, $options: "i" } },
+            ]
+        };
+
+        const products = await Product.find(search);
+
+        res.status(200).json({
+            Product: products
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Database Connection Failed"
+        });
+    }
+};
+
+module.exports = { CreateProduct, getAllProduct, getProductByBrand, getProductById, getProductByCategory, UpdateProduct, DeleteProduct, SearchProduct }

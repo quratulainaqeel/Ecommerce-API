@@ -84,7 +84,7 @@ const Login = async (req, res) => {
                             email: checkuserExist.email,
                             role: checkuserExist.role,
                             profile_pic: checkuserExist.profile_pic,
-                            joiningDate:checkuserExist.joiningDate
+                            joiningDate: checkuserExist.joiningDate
                         }
                         ,
                         process.env.JWT_SECRET
@@ -192,7 +192,7 @@ const getuserbyEmail = async (req, res) => {
 
 const UpdateUser = async (req, res) => {
 
-    const { _id, username, email, profile_pic } = req.body
+    const { _id, username, profile_pic } = req.body
     if (!_id) {
         res.status(403).json({
             message: "Missing Required Field"
@@ -201,18 +201,18 @@ const UpdateUser = async (req, res) => {
 
     else {
         const filter = { _id };
-        const update = { username, email, profile_pic };
+        const update = { username, profile_pic };
 
         try {
 
             await connect(process.env.MONGO_URI)
             console.log("DB connected")
 
-            await User.findOneAndUpdate(filter, update, {
+            const updateuser = await User.findOneAndUpdate(filter, update, {
                 new: true
             });
 
-            const updateuser = await User.find()
+            // const updateuser = await User.find()
 
             res.json({
                 message: "Success",
